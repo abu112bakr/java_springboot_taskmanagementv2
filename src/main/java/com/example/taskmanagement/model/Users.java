@@ -9,6 +9,15 @@ public class Users {
     private int id;
     private String username;
     private String password;
+    // REQUIRED BY JPA
+    public Users() {
+    }    
+    // Constructor for easier object creation
+    public Users (int id, String username, String password) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+    }       
     public int getId() {
         return id;
     }
@@ -31,4 +40,5 @@ public class Users {
     public String toString() {
         return "Users [id=" + id + ", username=" + username + ", password=" + password + "]";
     }      
+
 }

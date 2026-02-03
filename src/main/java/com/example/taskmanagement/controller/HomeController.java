@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
 public class HomeController {
@@ -11,6 +12,10 @@ public class HomeController {
     public String greet(HttpServletRequest request){
         return "Welcome to Secure web application "+ request.getSession().getId();
     }    
+    @RequestMapping("/about")
+    public String about(){
+        return "This application helps you manage your tasks efficiently.";
+    }
 }
 // video 30 spring security | basic
 //application.properties to make custom username and password
