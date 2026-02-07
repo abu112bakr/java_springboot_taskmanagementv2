@@ -78,8 +78,22 @@ public class TaskService {
         return taskRepo.save(existingTask);
     }
     public void deleteTask(int taskId){
-        taskRepo.deleteById(taskId);
+        
+        // 1. Get existing task from database
+        Task existingTask = taskRepo.findById(taskId).orElseThrow(() -> new TaskNotFoundException("Task with id " + taskId + " not found"));
+        // 2. Get looged in user
+        UserPrincipal userPrincipal = SecurityUtils.getCurrentUser();
+         // 3. Check if logged in user is the creator of the task
+        System.out.println(existingTask.getCreatedById() + " != == " + userPrincipal.getId());
+        
+        if (existingTask.getCreatedById() != userPrincipal.getId()) {
+            System.out.println("Task with id " + taskId + " deleted successfully");
+            System.out.println("unauthorized person trying to delete it");
+            throw new com.example.taskmanagement.exception.UnauthorizedException("You are not authorized to delete this task");
+        }
         System.out.println("Task with id " + taskId + " deleted successfully");
+        taskRepo.deleteById(taskId);
+        //System.out.println("Task with id " + taskId + " deleted successfully");
     }
     public LocalDate getCurrentDate(){
         return LocalDate.now();
