@@ -13,7 +13,13 @@ public class UserPrincipal implements UserDetails {
     public UserPrincipal(Users user){
         this.user = user;
     }
-
+    public Integer getId(){
+        return user.getId();
+    }
+    public Users getUser(){
+        return this.user;
+    }
+    
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // TODO Auto-generated method stub

@@ -32,10 +32,10 @@ public class TaskController {
         taskService.addTask(task);
         System.out.println(task + " added successfully");
     }
-    @PutMapping("/task")
-    public void updateTask(@RequestBody Task task){
-        taskService.updateTask(task);
-        System.out.println(task + " updated successfully");
+    @PutMapping("/task/{id}")
+    public Task updateTask(@PathVariable int id, @RequestBody Task task){
+        System.out.println("putMapping controller trieggered, got task/id & task body");
+        return taskService.updateTask(id, task);
     }
     @DeleteMapping("/task/{taskId}")
     public void deleteTask(@PathVariable int taskId){

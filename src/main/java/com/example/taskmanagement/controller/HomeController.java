@@ -3,6 +3,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.time.LocalDateTime;
+
+import org.antlr.v4.runtime.atn.SemanticContext.AND;
+import org.hibernate.Hibernate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -98,3 +104,64 @@ public class HomeController {
 // spring.datasource.username= postgres
 // spring.datasource.password= admin
 // admin is the password I used to connect to PostgreSQL 18
+// how task is saved with createdAt, updatedAt, fields
+
+// Postman
+//    ↓
+// TaskController.addTask()
+//    ↓
+// TaskService.addTask()
+//    ↓
+// taskRepo.save(task)
+//    ↓
+// JPA/Hibernate lifecycle event triggered
+//    ↓
+// AuditingEntityListener intercepts
+//    ↓
+// createdAt and updatedAt set automatically
+//    ↓
+// INSERT into database
+// code responsible
+// @CreatedDate
+// @Column(updatable = false)
+// private LocalDateTime createdAt;
+
+// @LastModifiedDate
+// private LocalDateTime updatedAt;
+// And this code
+// @EntityListeners(AuditingEntityListener.class)
+// When taskRepo.save(task) is called: from the service
+// 	1.	Hibernate prepares to insert entity
+// 	2.	AuditingEntityListener runs
+// 	3.	It sets:
+//     createdAt = now()
+//     updatedAt = now()
+//     before insert
+// plan to handle created by & updated by fields
+// in Task.java
+// place enity field + getter/setter
+// private String createdBy;
+// private int createdById; // foreign key to Users table
+// public String getCreatedBy() {
+//     return createdBy;
+// }
+// public void setCreatedBy(String createdBy) {
+//     this.createdBy = createdBy;
+// }
+// public int getCreatedById() {
+//     return createdById;
+// }
+// public void setCreatedById(int createdById) {
+//     this.createdById = createdById;
+// }
+// In TaskService.java (where task is actually saved)
+// Authentication auth =
+//         SecurityContextHolder.getContext().getAuthentication();
+
+// UserPrincipal userPrincipal =
+//         (UserPrincipal) auth.getPrincipal();
+
+// task.setCreatedBy(userPrincipal.getUsername());
+// taskRepo.save(task);
+
+
