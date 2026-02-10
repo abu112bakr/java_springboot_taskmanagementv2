@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
+@Service
 public class UserService {
     @Autowired
     private UserRepo repo; // inject repository
@@ -25,16 +27,24 @@ public class UserService {
     //     return repo.findById(id);
     //             //.orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
     // }
+    public Users register(Users user){
 
-    // 3️⃣ Add new user
-    public Users addUser(Users user) {
+        //Actually saving the user in database is the responsibility of service layer, so we call this method from controller
         return repo.save(user);
+         
     }
 
+    // // 3️⃣ Add new user
+    // public Users addUser(Users user) {
+    //     return repo.save(user);
+    // }
+
     // 4️⃣ Update existing user
-    public void updateUser(Users user) {
-        repo.save(user);
+    public Users updateUser(int id, Users user) {
+        //simple logic, anyone can update user
+        // 1. Get existing task from database
         System.out.println(user + " updated successfully");
+        return repo.save(user);
     }
 
     // 5️⃣ Delete user

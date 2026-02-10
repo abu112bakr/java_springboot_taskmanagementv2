@@ -12,19 +12,26 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity // follow my custom custom security fitler chain
 public class SecurityConfig {
+    //this bean is needed for BCryptPasswordEncoder to work
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }    
     // IMPLEMENT DEFAULT FORM LOGIN AND BASIC AUTHENTICATION BUT USING CUSTOM PASSWORD
     // http.csrf(customizer -> customizer.disable()); disable csrf token
     //http.authorizeHttpRequests(request -> request.anyRequest().authenticated()) every request must be authenticated
     //http.formLogin(Customizer.withDefaults()); // default login form
     //http.httpBasic(Customizer.withDefaults()); // accept login from postman
-    //.formLogin(Customizer.withDefaults())
+    //.formLogin(Customizer.withD efaults())
     @Bean
     public SecurityFilterChain securityFilterChanin(HttpSecurity http) throws Exception {
         //these are   labmda expression
@@ -45,17 +52,17 @@ public class SecurityConfig {
     // we will use our own UserDetailsService by using a class(MyUserDetailsService.java)
     @Autowired
     private UserDetailsService userDetailsService; // spring will provide the onject needed for implementation of this interface
+    //@Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         //provider need to connect with database and verify the user
         //not using password encoder
-        provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
+        //provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
+        provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
         //using UserDetailsService to verify username and password
         provider.setUserDetailsService(userDetailsService); // we will create our own UserDetailsService implementation to connect with db
 
-
         return provider;
-        
     }
 
 

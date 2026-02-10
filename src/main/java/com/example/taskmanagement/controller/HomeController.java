@@ -164,4 +164,7 @@ public class HomeController {
 // task.setCreatedBy(userPrincipal.getUsername());
 // taskRepo.save(task);
 
+// security was done
+// video 34 Spring security | Bcrypt password encoder
+// plain -> hash1 -> hash2 -> hash3
 
