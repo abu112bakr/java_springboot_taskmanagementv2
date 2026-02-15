@@ -3,9 +3,11 @@ package com.example.taskmanagement.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,10 +19,15 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity // follow my custom custom security fitler chain
 public class SecurityConfig {
+    @Autowired
+    private JwtFilter JwtFilter;
+
+
     //this bean is needed for BCryptPasswordEncoder to work
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -37,11 +44,18 @@ public class SecurityConfig {
         //these are   labmda expression
         return http
                 .csrf(customizer -> customizer.disable())
-                .authorizeHttpRequests(request -> request.anyRequest().authenticated())
+                //.authorizeHttpRequests(request -> request.anyRequest().authenticated()) // any request need auth
+                .authorizeHttpRequests(request -> request
+                    .requestMatchers("register", "loogin") //these two url dont need auth
+                    //.requestMatchers("/register", "/loogin") //these two url dont need auth
+                    .permitAll() 
+                    .anyRequest().authenticated()) // any ohther request need auth
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> 
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                //adding fil†er before normal defult UPAF filter (user password auth filter)
+                .addFilterBefore(JwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 // Part 2
@@ -64,7 +78,16 @@ public class SecurityConfig {
 
         return provider;
     }
-
+    // I want to use my own AuthenticationManager
+    // Whenever I want to use mine I need to create a bean
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+        //Flow: we use authenticationManager which talk to AuthenticationProvider
+        //AuthenticationManager is an interface so
+        //we use AuthenticationConfiguration which gives an object
+    }
+     
 
 
 

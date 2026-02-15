@@ -6,16 +6,28 @@ import com.example.taskmanagement.repo.UserRepo;
 //import com.example.taskmanagement.exception.UserNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties.Authentication;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
+
 @Service
 public class UserService {
     @Autowired
     private UserRepo repo; // inject repository
+
+    @Autowired
+    private JWTService jwtService; // for JWT token generation
+
+    @Autowired
+    AuthenticationManager authManager; // for login verification
 
     // 1️⃣ Get all users
     public List<Users> getUsers() {
@@ -60,5 +72,36 @@ public class UserService {
 
     public LocalDateTime getCurrentDateTime() {
         return LocalDateTime.now();
-    }    
-}
+    }
+    // public String verify(Users user) {
+    //     try {
+    //         Authentication authentication = authManager.authenticate(
+    //             new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
+    //         );
+    
+    //         if (authentication.isAuthenticated()) {
+    //             return "Successfully logged in";
+    //         } else {
+    //             return "Invalid username or password";
+    //         }
+    //     } catch (Exception e) {
+    //         return "Authentication error: " + e.getMessage();
+    //     }
+    // }
+
+    public String verify(Users user) {
+        System.out.println("Trying to authenticate: " + user.getUsername());
+
+        Authentication authentication = authManager.authenticate(
+            new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+        
+        System.out.println("Authenticated: " + authentication.isAuthenticated());    
+        if (authentication.isAuthenticated()) {
+            return jwtService.generateToken(user.getUsername());
+        }
+        return "Not logged in";
+        
+            
+    }
+}  
+

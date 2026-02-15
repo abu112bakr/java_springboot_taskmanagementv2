@@ -38,6 +38,16 @@ public class UserController {
         return userService.register(user); 
         //to store this registered user we need to work in service layer
     }
+
+    @PostMapping("/loogin")
+    public String login(@RequestBody Users user) {
+        System.out.println(user);
+        //return "Success fully logged in";
+        return userService.verify(user);
+
+        //return userService.login(user);
+        
+    }
     @PutMapping("/user/{id}")
     public Users UpdateUser(@PathVariable int id, @RequestBody Users user) {
         // Registration logic here

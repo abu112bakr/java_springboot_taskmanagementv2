@@ -168,3 +168,81 @@ public class HomeController {
 // video 34 Spring security | Bcrypt password encoder
 // plain -> hash1 -> hash2 -> hash3
 
+// go to MVN Repostory and search for JJWT API
+// using 0.12.5
+// <dependency>
+//     <groupId>io.jsonwebtoken</groupId>
+//     <artifactId>jjwt-api</artifactId>
+//     <version>0.12.5</version>
+//     <scope>compile</scope>
+// </dependency>
+// go to MVN Repostory and search for JJWT Impl
+// using 0.12.5
+// <dependency>
+//     <groupId>io.jsonwebtoken</groupId>
+//     <artifactId>jjwt-impl</artifactId>
+//     <version>0.12.5</version>
+//     <scope>runtime</scope>
+// </dependency>
+// go to MVN Repostory and search for JJWT jackson
+// using 0.12.5
+// <dependency>
+//     <groupId>io.jsonwebtoken</groupId>
+//     <artifactId>jjwt-impl</artifactId>
+//     <version>0.12.5</version>
+//     <scope>runtime</scope>
+// </dependency>
+//  AuthenticationManager calles the actual AuthenticationProvider
+// @Bean
+// public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+//     return config.getAuthenticationManager();
+//     //Flow: we use authenticationManager which talk to AuthenticationProvider
+//     //AuthenticationManager is an interface so
+//     //we use AuthenticationConfiguration which gives an object
+// }
+// @Bean
+// public SecurityFilterChain securityFilterChanin(HttpSecurity http) throws Exception {
+//     //these are   labmda expression
+//     return http
+//             .csrf(customizer -> customizer.disable())
+//             //.authorizeHttpRequests(request -> request.anyRequest().authenticated()) // any request need auth
+//             .authorizeHttpRequests(request -> request
+//                 .requestMatchers("register", "loogin") //these two url dont need auth
+//                 .permitAll() 
+//                 .anyRequest().authenticated()) // any ohther request need auth
+//             .formLogin(Customizer.withDefaults())
+//             .httpBasic(Customizer.withDefaults())
+//             .sessionManagement(session -> 
+//                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//             .build();
+// in usercontroller
+// @PostMapping("/loogin")
+// public String login(@RequestBody Users user) {
+//     System.out.println(user);
+//     //return "Success fully logged in";
+//     return userService.verify(user);
+// in userservice class
+// public String verify(Users user) {
+//     //
+//     Authentication authentication = authManager.authenticate(
+//         new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+//     if (authentication.isAuthenticated()) {
+//         return jwtService.generateToken(authentication);
+//     }
+//     return "Not logged in";
+//     }
+//in JWT service class
+// @Service
+// public class JWTService {
+
+//     public String generateToken(Authentication authentication) {
+// video 37 spring security | Generating JWT token
+//    public String generateToken(String username){
+// to generate token we also use, claims and generate keys to sign this token
+// generating token done
+// video 38 Spring Security | Validating JWT Token
+// User Password Auth filter is defult
+// we want 1st filter JWT filter. 2nd filter UPAF filter
+
+
+
