@@ -57,6 +57,10 @@ public class JwtFilter extends OncePerRequestFilter{
             filterChain.doFilter(request, response);
             return;
         }
+        if (request.getServletPath().equals("/register")) {
+            filterChain.doFilter(request, response);
+            return;
+        }        
 
         if (authHeader != null && authHeader.startsWith("Bearer ")){
             token = authHeader.substring(7);
