@@ -1,0 +1,12 @@
+# databaseChangeLog:
+#     - include:
+#         #file: /src/main/resources/db/changelog/001-create-tables.yaml
+#         file: db/changelog/001-create-tables.yaml
+#     # include:
+#     #     file: db/changelog/002-insert-data.xml
+
+databaseChangeLog:
+  - changeSet:
+      id: baseline
+      author: hasnath
+      changes: []

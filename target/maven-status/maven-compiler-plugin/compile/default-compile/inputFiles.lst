@@ -1,4 +1,5 @@
 /Users/cod_mac/Documents/training/java training/task-management/(github)task-management-system-for-v2/java_springboot_taskmanagementv2/src/main/java/com/example/taskmanagement/TaskmanagementApplication.java
+/Users/cod_mac/Documents/training/java training/task-management/(github)task-management-system-for-v2/java_springboot_taskmanagementv2/src/main/java/com/example/taskmanagement/config/JwtFilter.java
 /Users/cod_mac/Documents/training/java training/task-management/(github)task-management-system-for-v2/java_springboot_taskmanagementv2/src/main/java/com/example/taskmanagement/config/SecurityConfig.java
 /Users/cod_mac/Documents/training/java training/task-management/(github)task-management-system-for-v2/java_springboot_taskmanagementv2/src/main/java/com/example/taskmanagement/controller/HomeController.java
 /Users/cod_mac/Documents/training/java training/task-management/(github)task-management-system-for-v2/java_springboot_taskmanagementv2/src/main/java/com/example/taskmanagement/controller/Info.java
@@ -15,6 +16,7 @@
 /Users/cod_mac/Documents/training/java training/task-management/(github)task-management-system-for-v2/java_springboot_taskmanagementv2/src/main/java/com/example/taskmanagement/model/Users.java
 /Users/cod_mac/Documents/training/java training/task-management/(github)task-management-system-for-v2/java_springboot_taskmanagementv2/src/main/java/com/example/taskmanagement/repo/TaskRepo.java
 /Users/cod_mac/Documents/training/java training/task-management/(github)task-management-system-for-v2/java_springboot_taskmanagementv2/src/main/java/com/example/taskmanagement/repo/UserRepo.java
+/Users/cod_mac/Documents/training/java training/task-management/(github)task-management-system-for-v2/java_springboot_taskmanagementv2/src/main/java/com/example/taskmanagement/service/JWTService.java
 /Users/cod_mac/Documents/training/java training/task-management/(github)task-management-system-for-v2/java_springboot_taskmanagementv2/src/main/java/com/example/taskmanagement/service/MyUserDetailsService.java
 /Users/cod_mac/Documents/training/java training/task-management/(github)task-management-system-for-v2/java_springboot_taskmanagementv2/src/main/java/com/example/taskmanagement/service/TaskService.java
 /Users/cod_mac/Documents/training/java training/task-management/(github)task-management-system-for-v2/java_springboot_taskmanagementv2/src/main/java/com/example/taskmanagement/service/UserService.java

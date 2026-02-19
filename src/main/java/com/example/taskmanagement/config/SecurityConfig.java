@@ -46,8 +46,8 @@ public class SecurityConfig {
                 .csrf(customizer -> customizer.disable())
                 //.authorizeHttpRequests(request -> request.anyRequest().authenticated()) // any request need auth
                 .authorizeHttpRequests(request -> request
+                    //.requestMatchers("register", "loogin", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html") //these two url dont need auth
                     .requestMatchers("register", "loogin") //these two url dont need auth
-                    //.requestMatchers("/register", "/loogin") //these two url dont need auth
                     .permitAll() 
                     .anyRequest().authenticated()) // any ohther request need auth
                 .formLogin(Customizer.withDefaults())
