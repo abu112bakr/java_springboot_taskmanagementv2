@@ -10,3 +10,5 @@ databaseChangeLog:
       id: baseline
       author: hasnath
       changes: []
+  - include:
+      file: db/changelog/002-users-table-github-login.yaml

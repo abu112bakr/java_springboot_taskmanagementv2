@@ -9,6 +9,12 @@ public class Users {
     private int id;
     private String username;
     private String password;
+    //002-users-table-github-login.yaml
+    private String email;
+    private String provider;
+    private String providerId;
+
+
     // REQUIRED BY JPA
     public Users() {
     }    
