@@ -1,6 +1,7 @@
 com/example/taskmanagement/service/TaskService.class
 com/example/taskmanagement/repo/TaskRepo.class
 com/example/taskmanagement/exception/UnauthorizedException.class
+com/example/taskmanagement/config/OAuth2SuccessHandler.class
 com/example/taskmanagement/model/UserPrincipal.class
 com/example/taskmanagement/model/Status.class
 com/example/taskmanagement/service/UserService.class

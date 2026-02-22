@@ -42,9 +42,33 @@ public class Users {
     public void setPassword(String password) {
         this.password = password;
     }
+    // @Override 
+    // public String toString() {
+    //     return "Users [id=" + id + ", username=" + username + ", password=" + password + "]";
+    // }
+    public String getEmail() {
+        return email;
+    }    
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public String getProvider() {
+        return provider;
+    }    
+    public void setProvider(String string) {
+        this.provider = string;
+    }
+    public String getProviderId() {
+        return providerId;
+    }
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
+    }  
+    
     @Override 
     public String toString() {
-        return "Users [id=" + id + ", username=" + username + ", password=" + password + "]";
-    }      
+        return "Users [id=" + id + ", username=" + username + ", password=" + password 
+                + ", email=" + email + ", provider=" + provider + ", providerId=" + providerId + "]";
+    }
 
 }

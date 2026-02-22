@@ -27,45 +27,26 @@ public class SecurityConfig {
     @Autowired
     private JwtFilter JwtFilter;
 
+    @Autowired
+    private OAuth2SuccessHandler oAuth2SuccessHandler;
 
-    //this bean is needed for BCryptPasswordEncoder to work
+    @Autowired
+    private UserDetailsService userDetailsService; // spring will provide the onject needed for implementation of this interface
+    
+    // @Autowired
+    // private ApplicationContext context;
+
+    // -----------------------
+    // Password encoder for DB login
+    // 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }    
-    // IMPLEMENT DEFAULT FORM LOGIN AND BASIC AUTHENTICATION BUT USING CUSTOM PASSWORD
-    // http.csrf(customizer -> customizer.disable()); disable csrf token
-    //http.authorizeHttpRequests(request -> request.anyRequest().authenticated()) every request must be authenticated
-    //http.formLogin(Customizer.withDefaults()); // default login form
-    //http.httpBasic(Customizer.withDefaults()); // accept login from postman
-    //.formLogin(Customizer.withD efaults())
-    @Bean
-    public SecurityFilterChain securityFilterChanin(HttpSecurity http) throws Exception {
-        //these are   labmda expression
-        return http
-                .csrf(customizer -> customizer.disable())
-                //.authorizeHttpRequests(request -> request.anyRequest().authenticated()) // any request need auth
-                .authorizeHttpRequests(request -> request
-                    //.requestMatchers("register", "loogin", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html") //these two url dont need auth
-                    .requestMatchers("register", "loogin") //these two url dont need auth
-                    .permitAll() 
-                    .anyRequest().authenticated()) // any ohther request need auth
-                .formLogin(Customizer.withDefaults())
-                .httpBasic(Customizer.withDefaults())
-                .sessionManagement(session -> 
-                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                //adding fil†er before normal defult UPAF filter (user password auth filter)
-                .addFilterBefore(JwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
-// Part 2
-// working with db to verify user
-//Authentication object -> Authentication provider -> Authentication object
-//un-authticated                                        authenticated
-//we need to modify the authentication provider
-    // we will use our own UserDetailsService by using a class(MyUserDetailsService.java)
-    @Autowired
-    private UserDetailsService userDetailsService; // spring will provide the onject needed for implementation of this interface
+
+    // -----------------------
+    // AuthenticationProvider for username/password login
+    // 
     //@Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -80,39 +61,44 @@ public class SecurityConfig {
     }
     // I want to use my own AuthenticationManager
     // Whenever I want to use mine I need to create a bean
+    // -----------------------
+    // AuthenticationManager bean
+    // -----------------------    
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
         //Flow: we use authenticationManager which talk to AuthenticationProvider
         //AuthenticationManager is an interface so
         //we use AuthenticationConfiguration which gives an object
+    }    
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        //these are   labmda expression
+        return http
+                .csrf(customizer -> customizer.disable())
+                //.authorizeHttpRequests(request -> request.anyRequest().authenticated()) // any request need auth
+                .authorizeHttpRequests(auth -> auth
+                    //.requestMatchers("register", "loogin", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html") //these two url dont need auth
+                    .requestMatchers("register", "loogin", "/oauth2/**", "/login/oauth2/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html") //these two url dont need auth
+                    .permitAll() 
+                    .anyRequest().authenticated()) // any ohther request need auth
+                .formLogin(Customizer.withDefaults()) //optional for browser login
+                .httpBasic(Customizer.withDefaults()) //optional for postman login
+                .oauth2Login(oauth -> oauth.successHandler(oAuth2SuccessHandler)) // GitHub login
+                // -----------------------
+                // Stateless session (JWT)
+                // 
+                .sessionManagement(session -> 
+                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                //adding fil†er before normal defult UPAF filter (user password auth filter)
+                .addFilterBefore(JwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
+
+    
+
      
 
 
-
-// Part 1
-// using UserDetailsService & inMemoryUserDetailsManager to verify custom username and password
-// we verify user details from database using UserDetailsService interface, we will customize it
-// we will use InMemoryUserDetailsManager which is a class that implements UserDetailsService interface
-// InMemoryUserDetailsManager need object of UserDetails, UserDetails is an interface so we need a class for it. 
-// we use inbuild User from spring framwork & this User is a class which implements UserDetails interface
-// we will use builder of User class
-    // @Bean
-    // public UserDetailsService userDetailsService() {
-    //     UserDetails user1 = User
-    //             .withDefaultPasswordEncoder() // for demo purpose only, not for production\
-    //             .username("kiran")
-    //             .password("k@123")
-    //             .roles("USER")
-    //             .build();
-
-    //     UserDetails user2 = User
-    //             .withDefaultPasswordEncoder() // for demo purpose only, not for production\
-    //             .username("harsh")
-    //             .password("h@123")
-    //             .roles("ADMIN")
-    //             .build();
-    //     return new InMemoryUserDetailsManager(user1, user2);
-    // }    
 }

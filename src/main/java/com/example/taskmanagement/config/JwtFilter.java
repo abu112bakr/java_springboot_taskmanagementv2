@@ -61,6 +61,19 @@ public class JwtFilter extends OncePerRequestFilter{
             filterChain.doFilter(request, response);
             return;
         }        
+        // for github login
+        if (request.getServletPath().startsWith("/oauth2") ||
+        request.getServletPath().startsWith("/login/oauth2")) {
+        filterChain.doFilter(request, response);
+        return;
+        }     
+        // for swagger
+        if (request.getServletPath().startsWith("/v3/api-docs") ||
+        request.getServletPath().startsWith("/swagger-ui") ||
+        request.getServletPath().equals("/swagger-ui.html")) {
+        filterChain.doFilter(request, response);
+        return;
+        }        
 
         if (authHeader != null && authHeader.startsWith("Bearer ")){
             token = authHeader.substring(7);
