@@ -27,8 +27,8 @@ public class SecurityConfig {
     @Autowired
     private JwtFilter JwtFilter;
 
-    @Autowired
-    private OAuth2SuccessHandler oAuth2SuccessHandler;
+    // @Autowired
+    // private OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Autowired
     private UserDetailsService userDetailsService; // spring will provide the onject needed for implementation of this interface
@@ -85,7 +85,7 @@ public class SecurityConfig {
                     .anyRequest().authenticated()) // any ohther request need auth
                 .formLogin(Customizer.withDefaults()) //optional for browser login
                 .httpBasic(Customizer.withDefaults()) //optional for postman login
-                .oauth2Login(oauth -> oauth.successHandler(oAuth2SuccessHandler)) // GitHub login
+                
                 // -----------------------
                 // Stateless session (JWT)
                 // 
