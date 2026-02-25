@@ -27,8 +27,9 @@ public class SecurityConfig {
     @Autowired
     private JwtFilter JwtFilter;
 
-    // @Autowired
-    // private OAuth2SuccessHandler oAuth2SuccessHandler;
+    // Inject SuccessHandler in SecurityConfig
+    //@Autowired
+    //private OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Autowired
     private UserDetailsService userDetailsService; // spring will provide the onject needed for implementation of this interface
@@ -73,7 +74,7 @@ public class SecurityConfig {
     }    
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, OAuth2SuccessHandler oAuth2SuccessHandler) throws Exception {
         //these are   labmda expression
         return http
                 .csrf(customizer -> customizer.disable())
@@ -85,6 +86,10 @@ public class SecurityConfig {
                     .anyRequest().authenticated()) // any ohther request need auth
                 .formLogin(Customizer.withDefaults()) //optional for browser login
                 .httpBasic(Customizer.withDefaults()) //optional for postman login
+                //OAuth2
+                .oauth2Login(oauth -> 
+                    oauth.successHandler(oAuth2SuccessHandler)
+                )
                 
                 // -----------------------
                 // Stateless session (JWT)
