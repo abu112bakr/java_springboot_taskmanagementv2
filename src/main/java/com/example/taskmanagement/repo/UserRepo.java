@@ -14,6 +14,8 @@ public interface UserRepo extends JpaRepository<Users, Integer> {
     // For OAuth2 login, return Optional<Users>
     Optional<Users> findByEmail(String email); 
     Optional<Users> findOptionalByUsername(String username);
+
+    
       
 
 }

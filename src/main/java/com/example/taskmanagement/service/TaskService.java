@@ -101,4 +101,10 @@ public class TaskService {
     public LocalDateTime getUpDateAt(){
         return LocalDateTime.now();
     }    
+    // public List <Task> findByCustom(String createdBy){
+    //     return taskRepo.findByCreatedBy(createdBy);
+    // }
+    public List<Task> findByCreatedByAndDate(String createdBy, LocalDate date) {
+        return taskRepo.findByCreatedByAndDate(createdBy, date);
+    }
 }
